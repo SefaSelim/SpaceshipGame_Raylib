@@ -1,23 +1,19 @@
 ﻿using Raylib_cs;
+using SpaceshipGame;
 
 namespace HelloWorld;
 
 class Program
 {
+    
     public static void Main()
     {
-        Raylib.InitWindow(800, 480, "Hello World");
 
-        while (!Raylib.WindowShouldClose())
-        {
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.White);
+        Game game = new Game();
 
-            Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
+        game.StartGame();
+        game.UpdateGame();
+        game.EndGame();
 
-            Raylib.EndDrawing();
-        }
-
-        Raylib.CloseWindow();
     }
 }
