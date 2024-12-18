@@ -10,11 +10,12 @@ using static SpaceshipGame.Game;
 namespace SpaceshipGame
 {
 
-    public class Spaceship
+    public static class Spaceship
     {
-        int health = 100;
-        int damage = 10;
+        static int health = 100;
+        static int damage = 10;
         public static float Speed = 1f;
+        public static double ShootSpeed = 0.2f;
 
         public static List<Bullet> bullets = new List<Bullet>();
 
@@ -28,19 +29,19 @@ namespace SpaceshipGame
 
             if (Raylib.IsKeyDown(KeyboardKey.A))
             {
-                Positions.X -= Positions.X <= 0 ? 0 : Speed / 10;
+                Positions.X -= Positions.X <= 0 ? 0 : Speed / Raylib.GetFPS() * 300;
             }
             if (Raylib.IsKeyDown(KeyboardKey.D))
             {
-                Positions.X += Positions.X >= (Screen.Width - Size.X) ? 0 : Speed / 10;
+                Positions.X += Positions.X >= (Screen.Width - Size.X) ? 0 : Speed / Raylib.GetFPS() * 300;
             }
             if (Raylib.IsKeyDown(KeyboardKey.W))
             {
-                Positions.Y -= Positions.Y <= 0 ? 0 : Speed / 10;
+                Positions.Y -= Positions.Y <= 0 ? 0 : Speed / Raylib.GetFPS() * 300;
             }
             if (Raylib.IsKeyDown(KeyboardKey.S))
             {
-                Positions.Y += Positions.Y >= (Screen.Height - Size.Y) ? 0 : Speed / 10;
+                Positions.Y += Positions.Y >= (Screen.Height - Size.Y) ? 0 : Speed / Raylib.GetFPS() * 300;
             }
 
             Collision = new Rectangle(Positions, Size);
@@ -49,8 +50,8 @@ namespace SpaceshipGame
 
         public static void Shoot()
         {
-            Bullet bullet = new Bullet(Positions, 1f);
-            Spaceship.bullets.Add(bullet);
+            Bullet bullet = new Bullet(Positions, 2f);
+            bullets.Add(bullet);
         }
 
 
