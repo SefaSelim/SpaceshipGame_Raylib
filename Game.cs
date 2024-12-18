@@ -10,6 +10,7 @@ namespace SpaceshipGame
 {
     public class Game
     {
+        Spaceship spaceship = new Spaceship();
 
         public static class Screen
         {
@@ -18,48 +19,6 @@ namespace SpaceshipGame
             public const string Title = "Spaceship Game";
 
         }
-
-
-        public class Spaceship
-        {
-            int health = 100;
-            int damage = 10;
-            public static float Speed = 1f;
-
-            //List<Bullet> bullets = new List<Bullet>();
-
-            public static Vector2 Size = new Vector2(40f, 40f);
-            public static Vector2 Positions = new Vector2(10f, (Screen.Height - Size.X) / 2);
-            public static Rectangle Collision = new Rectangle(Positions,Size);
-
-            public static void control()
-            {
-                //çapraz yönlerde hız artışı problemi çözülecek
-
-                if (Raylib.IsKeyDown(KeyboardKey.A))
-                {
-                    Positions.X -= Positions.X <= 0 ? 0 : Speed / 10;
-                }
-                if (Raylib.IsKeyDown(KeyboardKey.D))
-                {
-                    Positions.X += Positions.X >= (Screen.Width - Size.X )? 0 : Speed / 10;
-                }
-                if (Raylib.IsKeyDown(KeyboardKey.W))
-                {
-                    Positions.Y -= Positions.Y <= 0 ? 0 : Speed / 10;
-                }
-                if (Raylib.IsKeyDown(KeyboardKey.S))
-                {
-                    Positions.Y += Positions.Y >= (Screen.Height - Size.Y) ? 0 : Speed / 10;
-                }
-
-                Collision = new Rectangle(Positions,Size);
-
-            }
-
-
-        }
-
 
 
 
@@ -91,6 +50,16 @@ namespace SpaceshipGame
                 //Main fuctions
                 Spaceship.control();
 
+                if (Raylib.IsKeyPressed(KeyboardKey.Space))
+                {
+
+                   Spaceship.Shoot();
+
+                }
+                foreach (Bullet bullet in Spaceship.bullets)
+                {
+                    bullet.Move();
+                }
 
 
                 //   Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
