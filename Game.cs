@@ -22,7 +22,12 @@ namespace SpaceshipGame
 
         public class Spaceship
         {
+            int health = 100;
+            int damage = 10;
             public static float Speed = 1f;
+
+            //List<Bullet> bullets = new List<Bullet>();
+
             public static Vector2 Size = new Vector2(40f, 40f);
             public static Vector2 Positions = new Vector2(10f, (Screen.Height - Size.X) / 2);
             public static Rectangle Collision = new Rectangle(Positions,Size);
@@ -69,7 +74,7 @@ namespace SpaceshipGame
 
         public void StartGame() {
 
-            Raylib.InitWindow(800, 480, "Hello World");
+            Raylib.InitWindow(Screen.Width, Screen.Height , Screen.Title);
 
 
         }
@@ -81,6 +86,9 @@ namespace SpaceshipGame
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.White);
 
+
+
+                //Main fuctions
                 Spaceship.control();
 
 
