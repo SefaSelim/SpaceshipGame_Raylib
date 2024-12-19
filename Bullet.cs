@@ -31,6 +31,7 @@ namespace SpaceshipGame
         public Bullet(Vector2 position)
         {
             Position = position;
+            Position.X += Spaceship.Size.X;
             Position.Y += (Spaceship.Size.Y - Size.Y) / 2;
         }
         public void Move()

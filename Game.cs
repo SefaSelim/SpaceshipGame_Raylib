@@ -101,7 +101,7 @@ namespace SpaceshipGame
                 Spaceship.bullets.RemoveAll(b => !b.isAlive);
 
 
-                //   Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
+                   Raylib.DrawText("Health: "+ Spaceship.health, 12, 12, 20, Color.Black);
                 Raylib.DrawRectangleV(Spaceship.Positions, Spaceship.Size, Color.Red);
 
                 Raylib.EndDrawing();

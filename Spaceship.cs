@@ -12,7 +12,7 @@ namespace SpaceshipGame
 
     public static class Spaceship
     {
-        static int health = 100;
+        public static int health = 1000;
         public static int damage = 20;
         public static float Speed = 1f;
         public static double ShootSpeed = 0.2f;
@@ -40,6 +40,11 @@ namespace SpaceshipGame
         {
             Bullet bullet = new Bullet(Positions);
             bullets.Add(bullet);
+        }
+
+        public static void Take_Damage(int amount)
+        {
+            health -= amount;
         }
 
 
