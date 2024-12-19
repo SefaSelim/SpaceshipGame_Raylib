@@ -50,7 +50,7 @@ namespace SpaceshipGame
 
         public static void Shoot()
         {
-            Bullet bullet = new Bullet(Positions, 2f);
+            Bullet bullet = new Bullet(Positions);
             bullets.Add(bullet);
         }
 

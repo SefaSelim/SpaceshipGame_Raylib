@@ -5,18 +5,19 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static SpaceshipGame.Enemy;
 
 namespace SpaceshipGame
 {
     public class Game
     {
-
+        CollisionDetector collisionDetector = new CollisionDetector();
         public static class Screen
         {
             public const int Height = 480;
             public const int Width = 800;
             public const string Title = "Spaceship Game";
-            public const int fps = 144;
+            public const int fps = 200;
 
         }
 
@@ -25,9 +26,25 @@ namespace SpaceshipGame
         //list enemies
 
         public bool isGameOver = false;
-        public double timer = 0;
+        private double timer = 0;
+        private double timerForEnemies = 0;
+
+        public List<Enemy> enemies = new List<Enemy>();
 
 
+        private void DrawEnemies()
+        {
+            if (timerForEnemies  >= 3 * Screen.fps)
+            {
+                BasicEnemy basicEnemy = new BasicEnemy();
+                enemies.Add(basicEnemy);
+                timerForEnemies = 0;
+            }
+
+            foreach (Enemy enemy in enemies) {
+                enemy.Move();
+            }
+        }
 
 
         public void StartGame() {
@@ -35,18 +52,22 @@ namespace SpaceshipGame
             Raylib.InitWindow(Screen.Width, Screen.Height , Screen.Title);
             Raylib.SetTargetFPS(Screen.fps);
 
+
         }
 
         public void UpdateGame()
         {
             while (!Raylib.WindowShouldClose())
             {
+                collisionDetector.CheckCollision(this);
+
                 timer += 1;
+                timerForEnemies++;
 
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.White);
 
-
+                DrawEnemies();
 
                 //Main fuctions
                 Spaceship.control();

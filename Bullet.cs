@@ -11,7 +11,7 @@ namespace SpaceshipGame
     public class Bullet
     {
         public bool isAlive = true;
-        public float Speed = 1f;
+        public float Speed = 2f; // ana gemi için speed içeren constructer kullanma, enemyler için speedli constructer kullanılacak
         public float Damage = 1f;
         Vector2 Position = new Vector2();
         Vector2 Size = new Vector2(5f, 5f);
@@ -25,6 +25,11 @@ namespace SpaceshipGame
             Speed = speed;
         }
 
+        public Bullet(Vector2 position)
+        {
+            Position = position;
+            Position.Y += (Spaceship.Size.Y - Size.Y) / 2;
+        }
         public void Move()
         {
             if (direction > 0)
