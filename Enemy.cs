@@ -19,18 +19,32 @@ namespace SpaceshipGame
         Vector2 Position = new Vector2();
         Vector2 Size = new Vector2(40f, 40f);
         public Rectangle Hitbox = new Rectangle();
+        public bool isEnemyAlive = true;
 
         abstract public void Move();
         abstract public void Attack();
 
+        public void CheckOutOfBounds()
+        {
+            if (Position.X < -20)
+            {
+                // gemi hasar alacak
+                Destroy();
+            }
+        }
+
         public void TakeDamage(int amount)
         {
-
+            Health -= amount;
+            if (Health <= 0)
+            {
+                Destroy();
+            }
         }
 
         public void Destroy()
         {
-
+            isEnemyAlive = false;
         }
 
         public class BasicEnemy : Enemy
@@ -41,11 +55,15 @@ namespace SpaceshipGame
                 Position.X -= Speed / Game.Screen.fps * 100;
                 Hitbox = new Rectangle(Position, Size);
                 Raylib.DrawRectangleRec(Hitbox, Color.Red);
+
+                CheckOutOfBounds();
             }
 
             public override void Attack()
             {
-                throw new NotImplementedException();
+                Bullet bullet = new Bullet(Position,2f);
+               
+                Spaceship.bullets.Add(bullet);
             }
             public BasicEnemy()
             {
