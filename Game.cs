@@ -44,6 +44,7 @@ namespace SpaceshipGame
             foreach (Enemy enemy in enemies) {
                 enemy.Move();
             }
+            enemies.RemoveAll(b => !b.isEnemyAlive);
         }
 
 
@@ -67,9 +68,9 @@ namespace SpaceshipGame
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.White);
 
-                DrawEnemies();
 
                 //Main fuctions
+                DrawEnemies();
                 Spaceship.control();
 
                 if (Raylib.IsKeyDown(KeyboardKey.Space))

@@ -19,18 +19,23 @@ namespace SpaceshipGame
         Vector2 Position = new Vector2();
         Vector2 Size = new Vector2(40f, 40f);
         public Rectangle Hitbox = new Rectangle();
+        public bool isEnemyAlive = true;
 
         abstract public void Move();
         abstract public void Attack();
 
         public void TakeDamage(int amount)
         {
-
+            Health -= amount;
+            if (Health <= 0)
+            {
+                Destroy();
+            }
         }
 
         public void Destroy()
         {
-
+            isEnemyAlive = false;
         }
 
         public class BasicEnemy : Enemy
