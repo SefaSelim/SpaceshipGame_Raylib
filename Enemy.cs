@@ -24,6 +24,15 @@ namespace SpaceshipGame
         abstract public void Move();
         abstract public void Attack();
 
+        public void CheckOutOfBounds()
+        {
+            if (Position.X < -20)
+            {
+                // gemi hasar alacak
+                Destroy();
+            }
+        }
+
         public void TakeDamage(int amount)
         {
             Health -= amount;
@@ -46,11 +55,15 @@ namespace SpaceshipGame
                 Position.X -= Speed / Game.Screen.fps * 100;
                 Hitbox = new Rectangle(Position, Size);
                 Raylib.DrawRectangleRec(Hitbox, Color.Red);
+
+                CheckOutOfBounds();
             }
 
             public override void Attack()
             {
-                throw new NotImplementedException();
+                Bullet bullet = new Bullet(Position,2f);
+               
+                Spaceship.bullets.Add(bullet);
             }
             public BasicEnemy()
             {

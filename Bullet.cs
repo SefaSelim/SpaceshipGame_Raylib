@@ -19,9 +19,12 @@ namespace SpaceshipGame
 
         public int direction = 1; // to the right
 
-        public Bullet(Vector2 position, float speed)
+        public Bullet(Vector2 position, float speed) // for enemies
         {
             Position = position;
+            Position.Y += (Spaceship.Size.Y - Size.Y) / 2;
+            Position.X -= 20; 
+            direction = -1;
             Speed = speed;
         }
 

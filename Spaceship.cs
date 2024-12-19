@@ -13,7 +13,7 @@ namespace SpaceshipGame
     public static class Spaceship
     {
         static int health = 100;
-        static int damage = 10;
+        public static int damage = 20;
         public static float Speed = 1f;
         public static double ShootSpeed = 0.2f;
 
@@ -27,22 +27,10 @@ namespace SpaceshipGame
         {
             //çapraz yönlerde hız artışı problemi çözülecek
 
-            if (Raylib.IsKeyDown(KeyboardKey.A))
-            {
-                Positions.X -= Positions.X <= 0 ? 0 : Speed / Raylib.GetFPS() * 300;
-            }
-            if (Raylib.IsKeyDown(KeyboardKey.D))
-            {
-                Positions.X += Positions.X >= (Screen.Width - Size.X) ? 0 : Speed / Raylib.GetFPS() * 300;
-            }
-            if (Raylib.IsKeyDown(KeyboardKey.W))
-            {
-                Positions.Y -= Positions.Y <= 0 ? 0 : Speed / Raylib.GetFPS() * 300;
-            }
-            if (Raylib.IsKeyDown(KeyboardKey.S))
-            {
-                Positions.Y += Positions.Y >= (Screen.Height - Size.Y) ? 0 : Speed / Raylib.GetFPS() * 300;
-            }
+            if (Raylib.IsKeyDown(KeyboardKey.A))  Positions.X -= Positions.X <= 0 ? 0 : Speed / Raylib.GetFPS() * 300;
+            if (Raylib.IsKeyDown(KeyboardKey.D))  Positions.X += Positions.X >= (Screen.Width - Size.X) ? 0 : Speed / Raylib.GetFPS() * 300;
+            if (Raylib.IsKeyDown(KeyboardKey.W))  Positions.Y -= Positions.Y <= 0 ? 0 : Speed / Raylib.GetFPS() * 300;
+            if (Raylib.IsKeyDown(KeyboardKey.S))  Positions.Y += Positions.Y >= (Screen.Height - Size.Y) ? 0 : Speed / Raylib.GetFPS() * 300;
 
             Collision = new Rectangle(Positions, Size);
 

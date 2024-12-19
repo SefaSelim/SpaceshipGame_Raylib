@@ -28,6 +28,7 @@ namespace SpaceshipGame
         public bool isGameOver = false;
         private double timer = 0;
         private double timerForEnemies = 0;
+        private double basicEnemyShootTimer = 0;
 
         public List<Enemy> enemies = new List<Enemy>();
 
@@ -43,6 +44,15 @@ namespace SpaceshipGame
 
             foreach (Enemy enemy in enemies) {
                 enemy.Move();
+            }
+
+            if (basicEnemyShootTimer >= 1 * Screen.fps)
+            {
+                foreach (BasicEnemy basicenemy in enemies)
+                {
+                    basicenemy.Attack();
+                }
+                basicEnemyShootTimer = 0;
             }
             enemies.RemoveAll(b => !b.isEnemyAlive);
         }
@@ -64,6 +74,7 @@ namespace SpaceshipGame
 
                 timer += 1;
                 timerForEnemies++;
+                basicEnemyShootTimer++;
 
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.White);

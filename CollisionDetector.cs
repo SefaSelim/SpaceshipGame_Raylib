@@ -18,7 +18,7 @@ namespace SpaceshipGame
                 {
                     if (Raylib.CheckCollisionRecs(bullet.hitbox, enemy.Hitbox))
                     {
-                        enemy.TakeDamage(10);
+                        enemy.TakeDamage(Spaceship.damage);
                         bullet.isAlive = false;
                     }
                 }
