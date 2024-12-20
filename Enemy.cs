@@ -75,7 +75,7 @@ namespace SpaceshipGame
                 this.Health = 100;
                 this.Position = SpawnPoint;
                 this.Hitbox = new Rectangle(Position, Size);
-                this.EnemyTexture = Raylib.LoadTexture("resources/BasicEnemy.png");
+                this.EnemyTexture = Raylib.LoadTexture("../../../resources/BasicEnemy.png");
 
 
             }

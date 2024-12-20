@@ -27,7 +27,7 @@ namespace SpaceshipGame
             Position.X -= 3; 
             direction = -1;
             Speed = speed;
-            bulletTexture = Raylib.LoadTexture("resources/basicenemybullet.png");
+            bulletTexture = Raylib.LoadTexture("../../../resources/basicenemybullet.png");
 
         }
 
@@ -36,7 +36,7 @@ namespace SpaceshipGame
             Position = position;
             Position.X += Spaceship.Size.X;
             Position.Y += (Spaceship.Size.Y - Size.Y) / 2;
-            bulletTexture = Raylib.LoadTexture("resources/shipbullet.png");
+            bulletTexture = Raylib.LoadTexture("../../../resources/shipbullet.png");
         }
         public void Move()
         {
