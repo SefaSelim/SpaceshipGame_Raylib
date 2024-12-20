@@ -21,11 +21,11 @@ namespace SpaceshipGame
 
         }
 
-
+        public static Texture2D background = Raylib.LoadTexture("resources/background.png");
 
         //list enemies
 
-        public bool isGameOver = false;
+        public static bool isGameOver = false;
         private double timer = 0;
         private double timerForEnemies = 0;
         private double basicEnemyShootTimer = 0;
@@ -62,6 +62,7 @@ namespace SpaceshipGame
 
             Raylib.InitWindow(Screen.Width, Screen.Height , Screen.Title);
             Raylib.SetTargetFPS(Screen.fps);
+            Raylib.InitAudioDevice();
 
 
         }
@@ -77,7 +78,8 @@ namespace SpaceshipGame
                 basicEnemyShootTimer++;
 
                 Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.White);
+                
+                DrawBackground();
 
 
                 //Main fuctions
@@ -101,8 +103,11 @@ namespace SpaceshipGame
                 Spaceship.bullets.RemoveAll(b => !b.isAlive);
 
 
-                   Raylib.DrawText("Health: "+ Spaceship.health, 12, 12, 20, Color.Black);
-                Raylib.DrawRectangleV(Spaceship.Positions, Spaceship.Size, Color.Red);
+                Raylib.DrawText("Health: "+ Spaceship.health, 12, 12, 20, Color.Black);
+
+
+                //Raylib.DrawRectangleV(Spaceship.Positions, Spaceship.Size, Color.Red);   // HITBOX CHECK
+                Raylib.DrawTextureEx(Spaceship.MainShip, new Vector2(Spaceship.Positions.X + Spaceship.Size.X, Spaceship.Positions.Y - 5f), 90, 0.45f, Color.White);
 
                 Raylib.EndDrawing();
             }
@@ -114,6 +119,20 @@ namespace SpaceshipGame
         public void EndGame()
         {
             Raylib.CloseWindow();
+        }
+
+        public void DrawBackground()
+        {
+            Raylib.ClearBackground(Color.White);
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    Raylib.DrawTextureEx(background, new Vector2(j * background.Width / 2, i * background.Height / 2), 0, 0.5f, Color.White);
+                }
+
+            }
         }
 
     }

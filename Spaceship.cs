@@ -20,8 +20,12 @@ namespace SpaceshipGame
         public static List<Bullet> bullets = new List<Bullet>();
 
         public static Vector2 Size = new Vector2(40f, 40f);
-        public static Vector2 Positions = new Vector2(10f, (Screen.Height - Size.X) / 2);
+        public static Vector2 Positions = new Vector2(10f, (Screen.Height - Size.X) / 2f);
         public static Rectangle Collision = new Rectangle(Positions, Size);
+
+        public static Texture2D MainShip = Raylib.LoadTexture("resources/Mainship.png");
+
+        public static Sound ShootSound = Raylib.LoadSound("resources/shootsound.ogg");
 
         public static void control()
         {
@@ -38,6 +42,8 @@ namespace SpaceshipGame
 
         public static void Shoot()
         {
+            Raylib.PlaySound(ShootSound);
+
             Bullet bullet = new Bullet(Positions);
             bullets.Add(bullet);
         }
@@ -47,6 +53,15 @@ namespace SpaceshipGame
             health -= amount;
         }
 
+        public static void Death()
+        {
+            if (health <= 0)
+            {
+                Raylib.UnloadTexture(MainShip);
+                Raylib.DrawText("GAME OVER", Screen.Width / 2 - 50, Screen.Height / 2, 20, Color.Black);
+                Game.isGameOver = true;
+            }
+        }
 
     }
 }
