@@ -16,6 +16,7 @@ namespace SpaceshipGame
         Vector2 Position = new Vector2();
         Vector2 Size = new Vector2(5f, 5f);
         public Rectangle hitbox = new Rectangle();
+        public Texture2D bulletTexture;
 
         public int direction = 1; // to the right
 
@@ -23,9 +24,11 @@ namespace SpaceshipGame
         {
             Position = position;
             Position.Y += (Spaceship.Size.Y - Size.Y) / 2;
-            Position.X -= 20; 
+            Position.X -= 3; 
             direction = -1;
             Speed = speed;
+            bulletTexture = Raylib.LoadTexture("resources/basicenemybullet.png");
+
         }
 
         public Bullet(Vector2 position)
@@ -33,9 +36,15 @@ namespace SpaceshipGame
             Position = position;
             Position.X += Spaceship.Size.X;
             Position.Y += (Spaceship.Size.Y - Size.Y) / 2;
+            bulletTexture = Raylib.LoadTexture("resources/shipbullet.png");
         }
         public void Move()
         {
+            if (!isAlive)
+            {
+                Raylib.UnloadTexture(bulletTexture);
+            }
+
             if (direction > 0)
             {
                 Position.X += Speed / Game.Screen.fps * 300;
@@ -46,7 +55,13 @@ namespace SpaceshipGame
             }
 
             hitbox = new Rectangle(Position, Size);
-            Raylib.DrawRectangleRec(hitbox, Color.Black);
+
+            //Raylib.DrawRectangleRec(hitbox, Color.Red);  //HITBOX CHECK
+            if (direction == -1)  Raylib.DrawTextureEx(bulletTexture, new Vector2(Position.X - 5f, Position.Y + Size.Y), 270, 0.7f, Color.White);
+            else                  Raylib.DrawTextureEx(bulletTexture, new Vector2(Position.X + 8f, Position.Y - 1f), 90, 0.7f, Color.White);
+
+
+
             ChechOutofbounds();
         }
 

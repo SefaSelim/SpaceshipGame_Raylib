@@ -20,13 +20,15 @@ namespace SpaceshipGame
         Vector2 Size = new Vector2(40f, 40f);
         public Rectangle Hitbox = new Rectangle();
         public bool isEnemyAlive = true;
+        public  Texture2D EnemyTexture;
+        public Texture2D EnemyBullet;
 
         abstract public void Move();
         abstract public void Attack();
 
         public void CheckOutOfBounds()
         {
-            if (Position.X < -20)
+            if (Position.X < -30)
             {
                 // gemi hasar alacak
                 Destroy();
@@ -44,6 +46,7 @@ namespace SpaceshipGame
 
         public void Destroy()
         {
+            Raylib.UnloadTexture(EnemyTexture);
             isEnemyAlive = false;
         }
 
@@ -54,14 +57,16 @@ namespace SpaceshipGame
             {
                 Position.X -= Speed / Game.Screen.fps * 100;
                 Hitbox = new Rectangle(Position, Size);
-                Raylib.DrawRectangleRec(Hitbox, Color.Red);
+
+                //Raylib.DrawRectangleRec(Hitbox, Color.Red);  //HITBOX CHECK
+                Raylib.DrawTextureEx(EnemyTexture, new Vector2 (Position.X + Size.X , Position.Y), 90, 0.4f, Color.White);
 
                 CheckOutOfBounds();
             }
 
             public override void Attack()
             {
-                Bullet bullet = new Bullet(Position,2f);
+                Bullet bullet = new Bullet(Position,1.5f);
                
                 Spaceship.bullets.Add(bullet);
             }
@@ -70,8 +75,9 @@ namespace SpaceshipGame
                 this.Health = 100;
                 this.Position = SpawnPoint;
                 this.Hitbox = new Rectangle(Position, Size);
+                this.EnemyTexture = Raylib.LoadTexture("resources/BasicEnemy.png");
 
-               
+
             }
 
         }
