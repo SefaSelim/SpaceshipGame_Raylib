@@ -23,9 +23,9 @@ namespace SpaceshipGame
         public static Vector2 Positions = new Vector2(10f, (Screen.Height - Size.X) / 2f);
         public static Rectangle Collision = new Rectangle(Positions, Size);
 
-        public static Texture2D MainShip = Raylib.LoadTexture("resources/Mainship.png");
+        public static Texture2D MainShip = Raylib.LoadTexture("../../../resources/Mainship.png");
 
-        public static Sound ShootSound = Raylib.LoadSound("resources/shootsound.ogg");
+        public static Sound ShootSound = Raylib.LoadSound("../../../resources/shootsound.ogg");
 
         public static void control()
         {

@@ -21,7 +21,7 @@ namespace SpaceshipGame
 
         }
 
-        public static Texture2D background = Raylib.LoadTexture("resources/background.png");
+        public static Texture2D background = Raylib.LoadTexture("../../../resources/background.png");
 
         //list enemies
 
