@@ -12,7 +12,7 @@ namespace SpaceshipGame
 
     public static class Spaceship
     {
-        public static int health = 1000;
+        public static int health = 100;
         public static int damage = 20;
         public static float Speed = 1f;
         public static double ShootSpeed = 0.2f;

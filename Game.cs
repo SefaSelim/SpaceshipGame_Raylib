@@ -21,39 +21,104 @@ namespace SpaceshipGame
 
         }
 
+        public static class Timers
+        {
+            public static double timer = 0;
+            public static double timerForEnemies = 0;
+            public static double basicEnemyShootTimer = 0;
+            public static double fastEnemyShootTimer = 0;
+            public static double strongEnemyShootTimer = 0;
+
+
+            public static void IncreaseTimers()
+            {
+                timer++;
+                timerForEnemies++;
+                basicEnemyShootTimer++;
+                fastEnemyShootTimer++;
+                strongEnemyShootTimer++;
+            }
+        }
+
         public static Texture2D background = Raylib.LoadTexture("../../../resources/background.png");
 
         //list enemies
 
         public static bool isGameOver = false;
-        private double timer = 0;
-        private double timerForEnemies = 0;
-        private double basicEnemyShootTimer = 0;
 
         public List<Enemy> enemies = new List<Enemy>();
 
 
+        private void BasicEnemyShoot()
+        {
+            if (Timers.basicEnemyShootTimer >= 2 * Screen.fps)
+            {
+                foreach (Enemy basicenemy in enemies)
+                {
+                    if (basicenemy is Enemy.BasicEnemy)
+                    {
+                        basicenemy.Attack();
+                    }
+                }
+                Timers.basicEnemyShootTimer = 0;
+            }
+        }
+
+        private void FastEnemyShoot()
+        {
+            if (Timers.fastEnemyShootTimer >= 1 * Screen.fps)
+            {
+                foreach (Enemy fastenemy in enemies)
+                {
+                    if (fastenemy is Enemy.FastEnemy)
+                    {
+                        fastenemy.Attack();
+                    }
+                }
+                Timers.fastEnemyShootTimer = 0;
+            }
+        }
+
+        private void StrongEnemyShoot()
+        {
+            if (Timers.strongEnemyShootTimer >= 3 * Screen.fps)
+            {
+                foreach (Enemy strongenemy in enemies)
+                {
+                    if (strongenemy is Enemy.StrongEnemy)
+                    {
+                        strongenemy.Attack();
+                    }
+                }
+                Timers.strongEnemyShootTimer = 0;
+            }
+        }
+
         private void DrawEnemies()
         {
-            if (timerForEnemies  >= 3 * Screen.fps)
+            if (Timers.timerForEnemies  >= 4 * Screen.fps)
             {
+
+                FastEnemy fastEnemy = new FastEnemy();
+                enemies.Add(fastEnemy);
+
                 BasicEnemy basicEnemy = new BasicEnemy();
                 enemies.Add(basicEnemy);
-                timerForEnemies = 0;
+
+                StrongEnemy strongEnemy = new StrongEnemy();
+                enemies.Add(strongEnemy);
+
+                Timers.timerForEnemies = 0;
             }
 
             foreach (Enemy enemy in enemies) {
                 enemy.Move();
             }
 
-            if (basicEnemyShootTimer >= 1 * Screen.fps)
-            {
-                foreach (BasicEnemy basicenemy in enemies)
-                {
-                    basicenemy.Attack();
-                }
-                basicEnemyShootTimer = 0;
-            }
+            BasicEnemyShoot();
+            FastEnemyShoot();
+            StrongEnemyShoot();
+
             enemies.RemoveAll(b => !b.isEnemyAlive);
         }
 
@@ -73,9 +138,7 @@ namespace SpaceshipGame
             {
                 collisionDetector.CheckCollision(this);
 
-                timer += 1;
-                timerForEnemies++;
-                basicEnemyShootTimer++;
+                Timers.IncreaseTimers();
 
                 Raylib.BeginDrawing();
                 
@@ -89,10 +152,10 @@ namespace SpaceshipGame
                 if (Raylib.IsKeyDown(KeyboardKey.Space))
                 {
 
-                    if (timer >= Spaceship.ShootSpeed * Screen.fps)
+                    if (Timers.timer >= Spaceship.ShootSpeed * Screen.fps)
                     {
                         Spaceship.Shoot();
-                        timer = 0;
+                        Timers.timer = 0;
                     }
 
                 }
