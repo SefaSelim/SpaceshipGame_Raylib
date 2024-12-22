@@ -58,7 +58,7 @@ namespace SpaceshipGame
 
             //Raylib.DrawRectangleRec(hitbox, Color.Red);  //HITBOX CHECK
             if (direction == -1)  Raylib.DrawTextureEx(bulletTexture, new Vector2(Position.X - 5f, Position.Y + Size.Y), 270, 0.7f, Color.White);
-            else                  Raylib.DrawTextureEx(bulletTexture, new Vector2(Position.X + 8f, Position.Y - 1f), 90, 0.7f, Color.White);
+            else                  Raylib.DrawTextureEx(bulletTexture, new Vector2(Position.X + 8f, Position.Y - 1f), 90, 0.6f, Color.White);
 
 
 

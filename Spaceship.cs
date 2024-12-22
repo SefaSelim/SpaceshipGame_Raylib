@@ -12,7 +12,7 @@ namespace SpaceshipGame
 
     public static class Spaceship
     {
-        public static int health = 1000;
+        public static int health = 100;
         public static int damage = 20;
         public static float Speed = 1f;
         public static double ShootSpeed = 0.2f;
@@ -53,12 +53,11 @@ namespace SpaceshipGame
             health -= amount;
         }
 
-        public static void Death()
+        public static void CheckDeath()
         {
             if (health <= 0)
             {
                 Raylib.UnloadTexture(MainShip);
-                Raylib.DrawText("GAME OVER", Screen.Width / 2 - 50, Screen.Height / 2, 20, Color.Black);
                 Game.isGameOver = true;
             }
         }
