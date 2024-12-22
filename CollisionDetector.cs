@@ -30,6 +30,12 @@ namespace SpaceshipGame
                         if (bullet.direction == 1)
                         {
                             enemy.TakeDamage(Spaceship.damage);
+
+                            if (enemy.Health <= 0)
+                            {
+                                Game.Score += enemy.GainedScore;
+                            }
+
                             bullet.isAlive = false;
                             bulletCollided = true;
                             break;

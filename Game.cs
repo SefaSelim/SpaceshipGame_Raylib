@@ -141,7 +141,7 @@ namespace SpaceshipGame
                     enemies.Add(strongEnemy);
                 }
 
-                if (Timers.WaveTimer < 3 * Screen.fps && Timers.WaveTimer > 1 * Screen.fps)
+                if (Timers.WaveTimer < 50 * Screen.fps && Timers.WaveTimer > 47 * Screen.fps)
                 {
                     BossEnemy bossEnemy = new BossEnemy();
                     enemies.Add(bossEnemy);

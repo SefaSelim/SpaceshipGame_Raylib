@@ -12,6 +12,7 @@ namespace SpaceshipGame
 {
     abstract public class Enemy
     {
+        public int GainedScore;
         public int MaxHealth;
         public int Health;
         public float Speed = 1;
@@ -101,6 +102,7 @@ namespace SpaceshipGame
             }
             public BasicEnemy()
             {
+                this.GainedScore = 100;
                 this.Health = 100;
                 this.MaxHealth = this.Health;
                 this.Position = SpawnPoint;
@@ -119,6 +121,7 @@ namespace SpaceshipGame
 
             public FastEnemy()
             {
+                this.GainedScore = 50;
                 this.Health = 40;
                 this.MaxHealth = this.Health;
                 this.Position = SpawnPoint;
@@ -156,6 +159,7 @@ namespace SpaceshipGame
 
             public StrongEnemy()
             {
+                this.GainedScore = 200;
                 this.Health = 200;
                 this.MaxHealth = this.Health;
                 this.Position = SpawnPoint;
@@ -192,6 +196,7 @@ namespace SpaceshipGame
         {
             public BossEnemy()
             {
+                this.GainedScore = 1000;
                 this.Size *= 2.1f;
                 this.Health = 1000;
                 this.MaxHealth = this.Health;
