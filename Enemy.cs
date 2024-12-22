@@ -28,9 +28,9 @@ namespace SpaceshipGame
         abstract public void Move();
         abstract public void Attack();
 
-        public void DrawHealthBar()
+        public void DrawHealthBar(int val)
         {
-            Raylib.DrawRectangleV(new Vector2(Position.X, Position.Y - 20), new Vector2((float)Health / MaxHealth * 50, 10), Color.Red);
+            Raylib.DrawRectangleV(new Vector2(Position.X, Position.Y - 20), new Vector2((float)Health / MaxHealth * val, 10), Color.Red);
             Raylib.DrawTextPro(Raylib.GetFontDefault(),Health.ToString(),new Vector2(Position.X,Position.Y - 40),new Vector2(0,0),0,20,1,Color.White);
         }
 
@@ -88,7 +88,7 @@ namespace SpaceshipGame
 
                 //Raylib.DrawRectangleRec(Hitbox, Color.Red);  //HITBOX CHECK
                 Raylib.DrawTextureEx(EnemyTexture, new Vector2 (Position.X + Size.X , Position.Y), 90, 0.4f, Color.White);
-                DrawHealthBar();
+                DrawHealthBar(50);
 
                 CheckOutOfBounds();
             }
@@ -136,7 +136,7 @@ namespace SpaceshipGame
 
                 //Raylib.DrawRectangleRec(Hitbox, Color.Red);  //HITBOX CHECK
                 Raylib.DrawTextureEx(EnemyTexture, new Vector2(Position.X + Size.X, Position.Y), 90, 0.4f, Color.White);
-                DrawHealthBar();
+                DrawHealthBar(50);
 
                 CheckOutOfBounds();
             }
@@ -173,7 +173,7 @@ namespace SpaceshipGame
 
                 //Raylib.DrawRectangleRec(Hitbox, Color.Red);  //HITBOX CHECK
                 Raylib.DrawTextureEx(EnemyTexture, new Vector2(Position.X + Size.X, Position.Y), 90, 0.5f, Color.White);
-                DrawHealthBar();
+                DrawHealthBar(50);
 
                 CheckOutOfBounds();
             }
@@ -190,15 +190,36 @@ namespace SpaceshipGame
 
         public class BossEnemy : Enemy
         {
-
+            public BossEnemy()
+            {
+                this.Size *= 2.1f;
+                this.Health = 1000;
+                this.MaxHealth = this.Health;
+                this.Position = new Vector2(850,240-Size.Y/2);
+                this.Hitbox = new Rectangle(Position, Size);
+                this.Speed = 0.5f;
+                this.Damage = 50;
+                this.EnemyTexture = Raylib.LoadTexture("../../../resources/BossEnemy.png");
+            }
             public override void Move()
             {
-                throw new NotImplementedException();
+                if (Position.X > 500)
+                {
+                    Position.X -= Speed / Game.Screen.fps * 100;
+                }
+
+                Hitbox = new Rectangle(Position, Size);
+
+                //Raylib.DrawRectangleRec(Hitbox, Color.Red);  //HITBOX CHECK
+                Raylib.DrawTextureEx(EnemyTexture, new Vector2(Position.X, Position.Y + Size.Y +6), 270, 1f, Color.White);
+                DrawHealthBar(100);
             }
 
             public override void Attack()
             {
-                throw new NotImplementedException();
+                Bullet bullet = new Bullet(Position, 1.5f);
+
+                Spaceship.bullets.Add(bullet);
             }
 
         }

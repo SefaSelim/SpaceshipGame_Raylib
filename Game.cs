@@ -28,6 +28,9 @@ namespace SpaceshipGame
             public static double basicEnemyShootTimer = 0;
             public static double fastEnemyShootTimer = 0;
             public static double strongEnemyShootTimer = 0;
+            public static double bossEnemyShootTimer = 0;
+
+            public static double WaveTimer = 0;
 
 
             public static void IncreaseTimers()
@@ -37,6 +40,8 @@ namespace SpaceshipGame
                 basicEnemyShootTimer++;
                 fastEnemyShootTimer++;
                 strongEnemyShootTimer++;
+                bossEnemyShootTimer++;
+                WaveTimer++;
             }
         }
 
@@ -45,6 +50,10 @@ namespace SpaceshipGame
         //list enemies
 
         public static bool isGameOver = false;
+        bool inMenu = true;
+        Rectangle startGame = new Rectangle(300, 215, 200, 50);
+
+        public static int Score = 0;
 
         public List<Enemy> enemies = new List<Enemy>();
 
@@ -94,85 +103,176 @@ namespace SpaceshipGame
             }
         }
 
+        private void BossEnemyShoot()
+        {
+            if (Timers.bossEnemyShootTimer >= 3 * Screen.fps)
+            {
+                foreach (Enemy bossenemy in enemies)
+                {
+                    if (bossenemy is Enemy.BossEnemy)
+                    {
+                        bossenemy.Attack();
+                    }
+                }
+                Timers.bossEnemyShootTimer= 0;
+            }
+        }
+
         private void DrawEnemies()
         {
-            if (Timers.timerForEnemies  >= 4 * Screen.fps)
+            if (Timers.timerForEnemies >= 2 * Screen.fps)
             {
 
-                FastEnemy fastEnemy = new FastEnemy();
-                enemies.Add(fastEnemy);
+                if (Timers.WaveTimer < 10 * Screen.fps)
+                {
+                    FastEnemy fastEnemy = new FastEnemy();
+                    enemies.Add(fastEnemy);
+                }
 
-                BasicEnemy basicEnemy = new BasicEnemy();
-                enemies.Add(basicEnemy);
+                if (Timers.WaveTimer < 20 * Screen.fps && Timers.WaveTimer > 10 * Screen.fps)
+                {
+                    BasicEnemy basicEnemy = new BasicEnemy();
+                    enemies.Add(basicEnemy);
+                }
 
-                StrongEnemy strongEnemy = new StrongEnemy();
-                enemies.Add(strongEnemy);
+                if (Timers.WaveTimer < 30 * Screen.fps && Timers.WaveTimer > 20 * Screen.fps )
+                {
+                    StrongEnemy strongEnemy = new StrongEnemy();
+                    enemies.Add(strongEnemy);
+                }
+
+                if (Timers.WaveTimer < 3 * Screen.fps && Timers.WaveTimer > 1 * Screen.fps)
+                {
+                    BossEnemy bossEnemy = new BossEnemy();
+                    enemies.Add(bossEnemy);
+                }
 
                 Timers.timerForEnemies = 0;
             }
 
-            foreach (Enemy enemy in enemies) {
+            foreach (Enemy enemy in enemies)
+            {
                 enemy.Move();
             }
 
             BasicEnemyShoot();
             FastEnemyShoot();
             StrongEnemyShoot();
+            BossEnemyShoot();
 
             enemies.RemoveAll(b => !b.isEnemyAlive);
         }
 
+        public void DrawMenu ()
+        {
+            Raylib.BeginDrawing();
 
-        public void StartGame() {
+            Raylib.ClearBackground(Color.White);
 
-            Raylib.InitWindow(Screen.Width, Screen.Height , Screen.Title);
+
+            if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), startGame))
+            {
+                Raylib.DrawRectangle(300, 215, 200, 50, Color.LightGray);
+                Raylib.DrawText("Start Game", 340, 230, 20, Color.Black);
+
+                if (Raylib.IsMouseButtonPressed(0))
+                {
+                    inMenu = false;
+                }
+            }
+            else
+            {
+                Raylib.DrawRectangle(300, 215, 200, 50, Color.Gray);
+                Raylib.DrawText("Start Game", 340, 230, 20, Color.White);
+            }
+
+
+            Raylib.EndDrawing();
+        }
+
+        public void DrawDeathScreen()
+        {
+            Raylib.BeginDrawing();
+
+            Raylib.ClearBackground(Color.White);
+
+
+
+            Raylib.EndDrawing();
+        }
+
+
+        public void StartGame()
+        {
+
+            Raylib.InitWindow(Screen.Width, Screen.Height, Screen.Title);
             Raylib.SetTargetFPS(Screen.fps);
             Raylib.InitAudioDevice();
 
 
         }
 
+
         public void UpdateGame()
         {
             while (!Raylib.WindowShouldClose())
             {
-                collisionDetector.CheckCollision(this);
 
-                Timers.IncreaseTimers();
-
-                Raylib.BeginDrawing();
-                
-                DrawBackground();
-
-
-                //Main fuctions
-                DrawEnemies();
-                Spaceship.control();
-
-                if (Raylib.IsKeyDown(KeyboardKey.Space))
+                if (inMenu)
+                {
+                   DrawMenu();
+                }
+                else if (!isGameOver)
                 {
 
-                    if (Timers.timer >= Spaceship.ShootSpeed * Screen.fps)
+                    collisionDetector.CheckCollision(this);
+
+                    Timers.IncreaseTimers();
+
+                    Raylib.BeginDrawing();
+
+                    DrawBackground();
+
+                    Raylib.DrawText("" + Score, Screen.Width / 2 - 10, 15, 40, Color.White);
+
+
+                    //Main fuctions
+                    DrawEnemies();
+                    Spaceship.control();
+
+                    if (Raylib.IsKeyDown(KeyboardKey.Space))
                     {
-                        Spaceship.Shoot();
-                        Timers.timer = 0;
+
+                        if (Timers.timer >= Spaceship.ShootSpeed * Screen.fps)
+                        {
+                            Spaceship.Shoot();
+                            Timers.timer = 0;
+                        }
+
                     }
+                    foreach (Bullet bullet in Spaceship.bullets)
+                    {
+                        bullet.Move();
+                    }
+                    Spaceship.bullets.RemoveAll(b => !b.isAlive);
 
+
+                    Raylib.DrawText("Health: " + Spaceship.health, 12, 12, 20, Color.Black);
+
+
+                    //Raylib.DrawRectangleV(Spaceship.Positions, Spaceship.Size, Color.Red);   // HITBOX CHECK
+                    Raylib.DrawTextureEx(Spaceship.MainShip, new Vector2(Spaceship.Positions.X + Spaceship.Size.X, Spaceship.Positions.Y - 5f), 90, 0.45f, Color.White);
+
+                    Raylib.EndDrawing();
+
+                    Spaceship.CheckDeath();
                 }
-                foreach (Bullet bullet in Spaceship.bullets)
+                else
                 {
-                    bullet.Move();
+                DrawDeathScreen();
                 }
-                Spaceship.bullets.RemoveAll(b => !b.isAlive);
 
 
-                Raylib.DrawText("Health: "+ Spaceship.health, 12, 12, 20, Color.Black);
-
-
-                //Raylib.DrawRectangleV(Spaceship.Positions, Spaceship.Size, Color.Red);   // HITBOX CHECK
-                Raylib.DrawTextureEx(Spaceship.MainShip, new Vector2(Spaceship.Positions.X + Spaceship.Size.X, Spaceship.Positions.Y - 5f), 90, 0.45f, Color.White);
-
-                Raylib.EndDrawing();
             }
         }
 

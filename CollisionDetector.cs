@@ -38,7 +38,9 @@ namespace SpaceshipGame
 
                     if (Raylib.CheckCollisionRecs(enemy.Hitbox , Spaceship.Collision))
                     {
-                        enemy.isEnemyAlive = false;
+                        if (enemy is Enemy.BossEnemy) { }
+                        else enemy.isEnemyAlive = false;
+
                         Spaceship.Take_Damage(enemy.Damage);
                         bulletCollided = true;
                         break;
