@@ -57,19 +57,31 @@ namespace SpaceshipGame
                     {
                         Spaceship.health += 30;
                     }
+                    else
+                    {
+                        Spaceship.health = 200;
+                    }
                 }
                 if (Powtype == 2)
                 {
-                    if (Spaceship.ShootSpeed > 0.09f)
+                    if (Spaceship.ShootSpeed > 0.1f)
                     {
                         Spaceship.ShootSpeed -= 0.04f;
+                    }
+                    else
+                    {
+                        Spaceship.ShootSpeed = 0.1f;
                     }
                 }
                 if (Powtype == 3)
                 {
-                    if (Spaceship.damage < 40)
+                    if (Spaceship.damage < 30)
                     {
-                        Spaceship.damage += 5;
+                        Spaceship.damage += 4;
+                    }
+                    else
+                    {
+                        Spaceship.damage = 30;
                     }
                 }
                 isAlive = false;
