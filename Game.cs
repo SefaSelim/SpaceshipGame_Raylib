@@ -11,7 +11,10 @@ namespace SpaceshipGame
 {
     public class Game
     {
+        Random random = new Random();
+
         CollisionDetector collisionDetector = new CollisionDetector();
+        Scoreboard scoreboard = new Scoreboard();
         public static class Screen
         {
             public const int Height = 480;
@@ -30,7 +33,11 @@ namespace SpaceshipGame
             public static double strongEnemyShootTimer = 0;
             public static double bossEnemyShootTimer = 0;
 
+
             public static double WaveTimer = 0;
+
+
+            public static double WaveTime = 4f;
 
 
             public static void IncreaseTimers()
@@ -56,8 +63,10 @@ namespace SpaceshipGame
         public static int Score = 0;
 
         public List<Enemy> enemies = new List<Enemy>();
+        public List<Powerups> powerups = new List<Powerups>();
 
 
+        #region ENEMY SHOOTERS
         private void BasicEnemyShoot()
         {
             if (Timers.basicEnemyShootTimer >= 2 * Screen.fps)
@@ -117,35 +126,119 @@ namespace SpaceshipGame
                 Timers.bossEnemyShootTimer= 0;
             }
         }
+        #endregion
+
+        #region ENEMY SPAWNERS
+        private void FastEnemySpawner(int start, int finish)
+        {
+            if (Timers.WaveTimer < finish * Screen.fps && Timers.WaveTimer > start * Screen.fps)
+            {
+                FastEnemy fastEnemy = new FastEnemy();
+                enemies.Add(fastEnemy);
+            }
+        }
+        private void BasicEnemySpawner(int start, int finish)
+        {
+            if (Timers.WaveTimer < finish * Screen.fps && Timers.WaveTimer > start * Screen.fps)
+            {
+                BasicEnemy basicEnemy = new BasicEnemy(true);
+                enemies.Add(basicEnemy);
+            }
+        }
+        private void MeteorSpawner(int start, int finish)
+        {
+            if (Timers.WaveTimer < finish * Screen.fps && Timers.WaveTimer > start * Screen.fps)
+            {
+                BasicEnemy basicEnemy = new BasicEnemy(false);
+                enemies.Add(basicEnemy);
+            }
+        }
+
+        private void StrongEnemySpawner(int start, int finish)
+        {
+            if (Timers.WaveTimer < finish * Screen.fps && Timers.WaveTimer > start * Screen.fps)
+            {
+                StrongEnemy strongEnemy = new StrongEnemy();
+                enemies.Add(strongEnemy);
+            }
+        }
+        private void BossEnemySpawner(int start, int finish)
+        {
+            if (Timers.WaveTimer < finish * Screen.fps && Timers.WaveTimer > start * Screen.fps)
+            {
+                BossEnemy bossEnemy = new BossEnemy();
+                enemies.Add(bossEnemy);
+            }
+        }
+
+#endregion  //ENEMY SPAWNERS
+
 
         private void DrawEnemies()
         {
-            if (Timers.timerForEnemies >= 2 * Screen.fps)
+            if (Timers.timerForEnemies >= Timers.WaveTime * Screen.fps)
             {
+                Powerups pow = new Powerups(random.Next(0,5));
+                powerups.Add(pow);
 
-                if (Timers.WaveTimer < 10 * Screen.fps)
+                #region WAVE STRUCTURE
+                if (Timers.WaveTimer > 10 && Timers.WaveTimer < 40)
                 {
-                    FastEnemy fastEnemy = new FastEnemy();
-                    enemies.Add(fastEnemy);
+                    Timers.WaveTime = 3.5f;
+                }
+                if (Timers.WaveTimer > 40 && Timers.WaveTimer < 70)
+                {
+                    Timers.WaveTime = 3f;   
+                }
+                if (Timers.WaveTimer > 70 && Timers.WaveTimer < 100)
+                {
+                    Timers.WaveTime = 2.5f;
+                }
+                if (Timers.WaveTimer > 100 && Timers.WaveTimer < 150)
+                {
+                    Timers.WaveTime = 2f;
+                }
+                if (Timers.WaveTimer > 150 && Timers.WaveTimer < 200)
+                {
+                    Timers.WaveTime = 1.5f;
+                }
+                if (Timers.WaveTimer > 200 && Timers.WaveTimer < 250)
+                {
+                    Timers.WaveTime = 1f;
+                }
+                if (Timers.WaveTimer > 250 && Timers.WaveTimer < 300)
+                {
+                    Timers.WaveTime = 0.6f;
+                }
+                if (Timers.WaveTimer > 300 && Timers.WaveTimer < 350)
+                {
+                    Timers.WaveTime = 0.3f;
                 }
 
-                if (Timers.WaveTimer < 20 * Screen.fps && Timers.WaveTimer > 10 * Screen.fps)
-                {
-                    BasicEnemy basicEnemy = new BasicEnemy();
-                    enemies.Add(basicEnemy);
-                }
+                #endregion
 
-                if (Timers.WaveTimer < 30 * Screen.fps && Timers.WaveTimer > 20 * Screen.fps )
-                {
-                    StrongEnemy strongEnemy = new StrongEnemy();
-                    enemies.Add(strongEnemy);
-                }
+                FastEnemySpawner(0, 30);
 
-                if (Timers.WaveTimer < 50 * Screen.fps && Timers.WaveTimer > 47 * Screen.fps)
-                {
-                    BossEnemy bossEnemy = new BossEnemy();
-                    enemies.Add(bossEnemy);
-                }
+                BasicEnemySpawner(25,50);
+                
+                MeteorSpawner(20, 30);
+
+                StrongEnemySpawner(40, 60);
+
+                FastEnemySpawner(50, 80);
+
+                BossEnemySpawner(90, 95);
+
+                FastEnemySpawner(120, 500);
+
+                StrongEnemySpawner(120, 500);
+
+                BasicEnemySpawner(120, 500);
+                
+                MeteorSpawner(120, 500);
+
+
+
 
                 Timers.timerForEnemies = 0;
             }
@@ -169,6 +262,10 @@ namespace SpaceshipGame
 
             Raylib.ClearBackground(Color.White);
 
+            if (Raylib.IsKeyPressed(KeyboardKey.Enter))
+            {
+                inMenu = false;
+            }
 
             if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), startGame))
             {
@@ -190,17 +287,21 @@ namespace SpaceshipGame
             Raylib.EndDrawing();
         }
 
-        public void DrawDeathScreen()
+        public void DrawSpaceshipSpecialities()
         {
-            Raylib.BeginDrawing();
 
-            Raylib.ClearBackground(Color.White);
+            Raylib.DrawRectangle(10, 10, 200, 20, Color.Gray);
+            Raylib.DrawRectangle(10, 10, Spaceship.health, 20, Color.Red); // max 200
+            Raylib.DrawText("Health",230 ,10,20,Color.White);
 
+            Raylib.DrawRectangle(10, 40, 200, 20, Color.Gray);
+            Raylib.DrawRectangle(10, 40, Convert.ToInt16(16/Spaceship.ShootSpeed), 20, Color.Blue); // max 0.1f
+            Raylib.DrawText("Shoot Speed", 230, 40, 20, Color.White);
 
-
-            Raylib.EndDrawing();
+            Raylib.DrawRectangle(10, 70, 200, 20, Color.Gray);
+            Raylib.DrawRectangle(10, 70, Convert.ToInt16(Spaceship.damage*200/30), 20, Color.Yellow); // max 30
+            Raylib.DrawText("Damage", 230, 70, 20, Color.White);
         }
-
 
         public void StartGame()
         {
@@ -233,7 +334,7 @@ namespace SpaceshipGame
 
                     DrawBackground();
 
-                    Raylib.DrawText("" + Score, Screen.Width / 2 - 10, 15, 40, Color.White);
+                    Raylib.DrawText("" + Score, Screen.Width / 2 - Score.ToString().Length * 15, 15, 40, Color.White);
 
 
                     //Main fuctions
@@ -256,8 +357,13 @@ namespace SpaceshipGame
                     }
                     Spaceship.bullets.RemoveAll(b => !b.isAlive);
 
+                    foreach (Powerups pow in powerups)
+                    {
+                        pow.DrawPowerup();
+                    }
+                    powerups.RemoveAll(b => !b.isAlive);
 
-                    Raylib.DrawText("Health: " + Spaceship.health, 12, 12, 20, Color.Black);
+                    DrawSpaceshipSpecialities();
 
 
                     //Raylib.DrawRectangleV(Spaceship.Positions, Spaceship.Size, Color.Red);   // HITBOX CHECK
@@ -269,7 +375,17 @@ namespace SpaceshipGame
                 }
                 else
                 {
-                DrawDeathScreen();
+                    if (!scoreboard.saveSuccessful)
+                    {
+                        scoreboard.DrawScoreSavePanel();
+                    }
+                    else
+                    {
+                       scoreboard.DrawScoreboard();
+                    }
+
+
+
                 }
 
 

@@ -13,9 +13,9 @@ namespace SpaceshipGame
     public static class Spaceship
     {
         public static int health = 100;
-        public static int damage = 20;
+        public static int damage = 10;
         public static float Speed = 1f;
-        public static double ShootSpeed = 0.2f;
+        public static double ShootSpeed = 0.4f;
 
         public static List<Bullet> bullets = new List<Bullet>();
 

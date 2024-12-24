@@ -26,6 +26,8 @@ namespace SpaceshipGame
         public  Texture2D EnemyTexture;
         public Texture2D EnemyBullet;
 
+        private bool isMeteorit = false;
+
         abstract public void Move();
         abstract public void Attack();
 
@@ -88,19 +90,27 @@ namespace SpaceshipGame
                 Hitbox = new Rectangle(Position, Size);
 
                 //Raylib.DrawRectangleRec(Hitbox, Color.Red);  //HITBOX CHECK
-                Raylib.DrawTextureEx(EnemyTexture, new Vector2 (Position.X + Size.X , Position.Y), 90, 0.4f, Color.White);
+                Raylib.DrawTextureEx(EnemyTexture, new Vector2 (Position.X + Size.X , Position.Y), 90, 0.4f * Size.X / 40f, Color.White);
                 DrawHealthBar(50);
+               // Raylib.DrawText(Damage.ToString(), (int)Position.X, (int)Position.Y - 20, 20, Color.White); //METEORLARIN DAMAGE YAZISI
 
                 CheckOutOfBounds();
             }
 
             public override void Attack()
             {
-                Bullet bullet = new Bullet(Position,1.5f);
-               
-                Spaceship.bullets.Add(bullet);
+                if (isMeteorit)
+                {
+
+                }
+                else
+                {
+                    Bullet bullet = new Bullet(Position, 1.5f);
+                    Spaceship.bullets.Add(bullet);
+                }
+
             }
-            public BasicEnemy()
+            public BasicEnemy(bool isEnemy)
             {
                 this.GainedScore = 100;
                 this.Health = 100;
@@ -109,7 +119,22 @@ namespace SpaceshipGame
                 this.Hitbox = new Rectangle(Position, Size);
                 this.Speed = 1f;
                 this.Damage = 20;
-                this.EnemyTexture = Raylib.LoadTexture("../../../resources/BasicEnemy.png");
+                isMeteorit = !isEnemy;
+
+                if (isMeteorit)
+                {
+                    this.EnemyTexture = Raylib.LoadTexture("../../../resources/meteorit.png");
+                    float randSize = (float)random.Next(20,120);
+                    randSize /= 40;
+                    this.Size = new Vector2(40f * randSize, 40f * randSize);
+                    this.Damage  = Convert.ToInt32((float)this.Damage  * randSize);
+                    this.Health = Convert.ToInt32((float)this.Health * randSize);
+                    Health /= 2;
+                }
+                else
+                {
+                    this.EnemyTexture = Raylib.LoadTexture("../../../resources/BasicEnemy.png");
+                }
 
 
             }
@@ -222,7 +247,7 @@ namespace SpaceshipGame
 
             public override void Attack()
             {
-                Bullet bullet = new Bullet(Position, 1.5f);
+                Bullet bullet = new Bullet(Position, 1.5f,-2);
 
                 Spaceship.bullets.Add(bullet);
             }
