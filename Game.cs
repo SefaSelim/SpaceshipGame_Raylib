@@ -178,64 +178,71 @@ namespace SpaceshipGame
         {
             if (Timers.timerForEnemies >= Timers.WaveTime * Screen.fps)
             {
-                Powerups pow = new Powerups(random.Next(0,5));
+                Powerups pow = new Powerups(random.Next(0,6));
                 powerups.Add(pow);
 
                 #region WAVE STRUCTURE
                 if (Timers.WaveTimer > 10 && Timers.WaveTimer < 40)
                 {
-                    Timers.WaveTime = 3.5f;
+                    Timers.WaveTime = 4.5f;
                 }
                 if (Timers.WaveTimer > 40 && Timers.WaveTimer < 70)
                 {
-                    Timers.WaveTime = 3f;   
+                    Timers.WaveTime = 3.5f;   
                 }
-                if (Timers.WaveTimer > 70 && Timers.WaveTimer < 100)
+                if (Timers.WaveTimer > 70 && Timers.WaveTimer < 120)
                 {
-                    Timers.WaveTime = 2.5f;
+                    Timers.WaveTime = 3f;
                 }
-                if (Timers.WaveTimer > 100 && Timers.WaveTimer < 150)
+                if (Timers.WaveTimer > 120 && Timers.WaveTimer < 180)
                 {
                     Timers.WaveTime = 2f;
                 }
-                if (Timers.WaveTimer > 150 && Timers.WaveTimer < 200)
+                if (Timers.WaveTimer > 180 && Timers.WaveTimer < 250)
                 {
                     Timers.WaveTime = 1.5f;
                 }
-                if (Timers.WaveTimer > 200 && Timers.WaveTimer < 250)
+                if (Timers.WaveTimer > 250 && Timers.WaveTimer < 300)
                 {
                     Timers.WaveTime = 1f;
                 }
-                if (Timers.WaveTimer > 250 && Timers.WaveTimer < 300)
+                if (Timers.WaveTimer > 300 && Timers.WaveTimer < 400)
                 {
                     Timers.WaveTime = 0.6f;
                 }
-                if (Timers.WaveTimer > 300 && Timers.WaveTimer < 350)
+                if (Timers.WaveTimer > 400 && Timers.WaveTimer < 500)
                 {
                     Timers.WaveTime = 0.3f;
                 }
 
                 #endregion
 
-                FastEnemySpawner(0, 30);
+                FastEnemySpawner(0, 40);
 
-                BasicEnemySpawner(25,50);
+                BasicEnemySpawner(35,60);
                 
-                MeteorSpawner(20, 30);
+                MeteorSpawner(20, 35);
 
-                StrongEnemySpawner(40, 60);
-
-                FastEnemySpawner(50, 80);
+                StrongEnemySpawner(55, 80);
 
                 BossEnemySpawner(90, 95);
 
-                FastEnemySpawner(120, 500);
+                FastEnemySpawner(105, 200);
 
-                StrongEnemySpawner(120, 500);
+                StrongEnemySpawner(150, 200);
 
-                BasicEnemySpawner(120, 500);
+                BasicEnemySpawner(130, 200);
                 
-                MeteorSpawner(120, 500);
+                MeteorSpawner(180, 200);
+
+                BossEnemySpawner(200,204);
+
+
+                FastEnemySpawner(210, 1000);
+                BasicEnemySpawner(210, 1000);
+                StrongEnemySpawner(210, 1000);
+                MeteorSpawner(210, 1000);
+
 
 
 
@@ -295,7 +302,7 @@ namespace SpaceshipGame
             Raylib.DrawText("Health",230 ,10,20,Color.White);
 
             Raylib.DrawRectangle(10, 40, 200, 20, Color.Gray);
-            Raylib.DrawRectangle(10, 40, Convert.ToInt16(16/Spaceship.ShootSpeed), 20, Color.Blue); // max 0.1f
+            Raylib.DrawRectangle(10, 40, Convert.ToInt16(20/Spaceship.ShootSpeed), 20, Color.Blue); // max 0.1f
             Raylib.DrawText("Shoot Speed", 230, 40, 20, Color.White);
 
             Raylib.DrawRectangle(10, 70, 200, 20, Color.Gray);
